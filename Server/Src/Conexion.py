@@ -9,7 +9,7 @@ try:
     )
     print("coneccion exitosa")
     cursor = Connection.cursor()
-    cursor.execute("SELECT RAZA FROM animal")
+    cursor.execute("SELECT * FROM animal")
     rows = cursor.fetchall()
     for row in rows:
         print(row)
