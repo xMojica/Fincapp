@@ -1,0 +1,47 @@
+--Borrado de datos de las tablas
+DELETE FROM finanzas;
+DELETE FROM persona_animales;
+DELETE FROM venta;
+DELETE FROM persona;
+DELETE FROM animal;
+DELETE FROM corral;
+
+INSERT INTO corral (id, capacidad, dimension)
+VALUES
+    ('C1', 30, '10 Hectareas'),
+    ('C2', 18, '6 Hectareas'),
+    ('C3', 45, '15 Hectareas');
+
+INSERT INTO animal (id, raza, peso, color, sexo, fecha_nacimiento, fecha_ingreso, edad_compra, edad_actual, precio_compra, categoria, cantidad_leche, corral_id)
+VALUES
+    ('A1', 'Holstein', 500, 'Blanco y negro', 'F', '2020-06-24', '2023-10-24', '36 Meses', '41 Meses', 4000000, 'Lechería', 25, 1),
+    ('A2', 'Holstein', 550, 'Blanco y negro', 'F', '2021-04-24', '2023-10-24', '30 Meses', '30 Meses', 4500000, 'Lechería', 33, 1),
+    ('A3', 'Holstein', 600, 'Blanco y negro', 'F', '2019-10-24', '2023-10-24', '48 Meses', '48 Meses', 5000000, 'Lechería', 22, 1),
+    ('A4', 'Holstein', 480, 'Blanco y negro', 'F', '2020-10-24', '2023-10-24', '36 Meses', '36 Meses', 3500000, 'Lechería', 40, 1),
+    ('A5', 'Holstein', 520, 'Blanco y negro', 'F', '2020-04-24', '2023-10-24', '42 Meses', '42 Meses', 4800000, 'Lechería', 37, 1);
+
+INSERT INTO persona (id, nombre, apellido, contacto, area)
+VALUES
+    ('P1', 'Juan', 'Pérez', '3214567898', 'Mayordomo'),
+    ('P2', 'Cesar', 'Londoño', '3008768932', 'Veterinario'),
+    ('P3', 'Carlos', 'Gómez', '3214543456', 'Ayudante');
+
+-- Insertar datos en la tabla persona_animales (relación entre personas y animales)
+INSERT INTO persona_animales (persona_id, animal_id)
+VALUES
+    ('P1', 'A1'),
+    ('P1', 'A2'),
+    ('P1', 'A3');
+
+
+**------------------------------------------------------------**
+
+INSERT INTO rentabilidad (ingresos_leche, gastos_personal, gastos_insumos, gastos_transporte, gastos_estructurales, porcentaje_rentabilidad, ganancia_total, venta_animales, fondos_compra)
+VALUES
+    (12480000, 5460000, 3510000, 1755000, 1080000, 0.35, 10800000, 2145000, 0);
+
+-- Insertar datos en la tabla venta (precios aproximados en pesos colombianos)
+INSERT INTO venta (fecha_venta, precio_venta, animal_id)
+VALUES
+    ('2023-11-05', 2145000, 'A3');
+

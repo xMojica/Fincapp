@@ -1,0 +1,64 @@
+DROP TABLE IF EXISTS venta;
+DROP TABLE IF EXISTS persona_animales;
+DROP TABLE IF EXISTS rentabilidad;
+DROP TABLE IF EXISTS persona;
+DROP TABLE IF EXISTS animal;
+DROP TABLE IF EXISTS corral;
+
+CREATE TABLE corral (
+    id        VARCHAR(5) PRIMARY KEY,
+    capacidad INTEGER NOT NULL,
+    dimension VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE animal (
+    id               VARCHAR(5) PRIMARY KEY,
+    raza             VARCHAR(20) NOT NULL,
+    peso             INTEGER NOT NULL,
+    color            VARCHAR(20) NOT NULL,
+    sexo             CHAR(1) NOT NULL,
+    fecha_nacimiento DATE NOT NULL,
+    fecha_ingreso    DATE NOT NULL,
+    edad_compra      VARCHAR(20),
+    edad_actual      VARCHAR(20) NOT NULL,
+    precio_compra    INTEGER,
+    categoria        VARCHAR(20) NOT NULL,
+    cantidad_leche   INTEGER,
+    corral_id        INTEGER NOT NULL
+);
+
+CREATE TABLE persona (
+    id       VARCHAR(5) PRIMARY KEY,
+    nombre   VARCHAR(20) NOT NULL,
+    apellido VARCHAR(20) NOT NULL,
+    contacto VARCHAR(10) NOT NULL,
+    area     VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE persona_animales (
+    persona_id VARCHAR(5) NOT NULL,
+    animal_id  VARCHAR(5) NOT NULL,
+    PRIMARY KEY (persona_id, animal_id),
+    FOREIGN KEY (animal_id) REFERENCES animal (id),
+    FOREIGN KEY (persona_id) REFERENCES persona (id)
+);
+
+CREATE TABLE rentabilidad (
+    ingresos_leche          FLOAT,
+    gastos_personal         FLOAT,
+    gastos_insumos          FLOAT,
+    gastos_transporte       FLOAT,
+    gastos_estructurales    FLOAT,
+    porcentaje_rentabilidad FLOAT,
+    ganancia_total          FLOAT,
+    venta_animales          FLOAT,
+    fondos_compra	        FLOAT	 	
+);
+
+CREATE TABLE venta (
+    id           VARCHAR(5) PRIMARY KEY,
+    fecha_venta  DATE NOT NULL,
+    precio_venta FLOAT NOT NULL,
+    animal_id    VARCHAR(5) NOT NULL,
+    FOREIGN KEY (animal_id) REFERENCES animal (id)
+);
