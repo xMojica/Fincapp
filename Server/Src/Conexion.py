@@ -13,5 +13,7 @@ try:
     rows = cursor.fetchall()
     for row in rows:
         print(row)
+    cursor.close()
+    connection.close()
 except Exception as ex:
     print(ex)
