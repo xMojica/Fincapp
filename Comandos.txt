@@ -1,12 +1,16 @@
+instalar python con el path
+
+pip install -r
+
 pip install fastapi
 instalar FastApi en la carpeta raiz del servidor, en este caso es server
 
 pip install "uvicorn[standard]"
 instalar uvicorn en la carpeta server
 
-
 uvicorn main:app --reload
 Correr el servidor en la carpeta server
 
 source c:/Users/mojic/Desktop/Fincapp/Server/env/Scripts/activate
 activar el entorno virtual en la carpeta server
+
