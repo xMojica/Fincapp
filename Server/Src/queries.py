@@ -4,7 +4,6 @@ from pydantic import BaseModel
 import psycopg2
 
 
-
 app = FastAPI()
 
 # Configuración de CORS (si es necesario)
@@ -17,9 +16,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 class User(BaseModel):
     nombre: str
     apellido: str
+
 
 def connect_db():
     return psycopg2.connect(
@@ -29,12 +30,16 @@ def connect_db():
         database="dbfincapp",
     )
 
+
 # queries.py
 def login_query(user: User):
     try:
         connection = connect_db()
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM persona WHERE nombre=%s AND apellido=%s", (user.nombre, user.apellido))
+        cursor.execute(
+            "SELECT * FROM persona WHERE nombre=%s AND apellido=%s",
+            (user.nombre, user.apellido),
+        )
         result = cursor.fetchone()
         cursor.close()
         connection.close()
@@ -45,6 +50,7 @@ def login_query(user: User):
             raise HTTPException(status_code=401, detail="Credenciales inválidas")
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Error en la consulta: {str(ex)}")
+
 
 def execute_query(query):
     try:
@@ -61,33 +67,41 @@ def execute_query(query):
         print(f"Error en la consulta: {ex}")  # Agregado para manejo de errores
         return str(ex)
 
+
 @app.get("/animales")
 def get_animales():
     return execute_query("SELECT * FROM animal")
 
-@app.get("/animalesl")
+
+@app.get("/animales/lecheria")
 def get_animalesl():
     return execute_query("SELECT * FROM animal WHERE categoria = 'Lechería'")
 
-@app.get("/animalesg")
+
+@app.get("/animales/genetica")
 def get_animalesg():
     return execute_query("SELECT * FROM animal WHERE categoria = 'Genética'")
 
-@app.get("/animalese")
+
+@app.get("/animales/engorde")
 def get_animalese():
     return execute_query("SELECT * FROM animal WHERE categoria = 'Engorde'")
+
 
 @app.get("/corrales")
 def get_corral():
     return execute_query("SELECT * FROM corral")
 
+
 @app.get("/personas")
 def get_personas():
     return execute_query("SELECT * FROM persona")
 
+
 @app.get("/rentabilidad")
 def get_rentabilidad():
     return execute_query("SELECT * FROM rentabilidad")
+
 
 @app.get("/ventas")
 def get_ventas():
