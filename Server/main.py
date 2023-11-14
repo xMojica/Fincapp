@@ -1,7 +1,7 @@
 # main.py
 from typing import Union
 from fastapi import FastAPI, HTTPException, Request
-from Src.queries import get_animales, get_personas, get_rentabilidad, get_ventas, login_query, User
+from Src.queries import get_animales, get_animalese, get_animalesg, get_animalesl, get_corral, get_personas, get_rentabilidad, get_ventas, login_query, User
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import psycopg2
@@ -33,7 +33,50 @@ def get_animales01():
         return {
             "message": "No se encontraron datos"
         }  # Manejo de ningún dato encontrado
+    
+@app.get("/animalesl")
+def get_animales02():
+    data = get_animalesl()  # Obtiene los datos de la tabla "animal-lecheria"
 
+    if data is not None:
+        return data
+    else:
+        return {
+            "message": "No se encontraron datos"
+        }  # Manejo de ningún dato encontrado
+
+@app.get("/animalesg")
+def get_animales03():
+    data = get_animalesg()  # Obtiene los datos de la tabla "animal-genetica"
+
+    if data is not None:
+        return data
+    else:
+        return {
+            "message": "No se encontraron datos"
+        }  # Manejo de ningún dato encontrado
+
+@app.get("/animalese")
+def get_animales04():
+    data = get_animalese()  # Obtiene los datos de la tabla "animal-engorde"
+
+    if data is not None:
+        return data
+    else:
+        return {
+            "message": "No se encontraron datos"
+        }  # Manejo de ningún dato encontrado
+    
+@app.get("/corrales")
+def get_corral01():
+    data = get_corral()  # Obtiene los datos de la tabla "animal"
+
+    if data is not None:
+        return data
+    else:
+        return {
+            "message": "No se encontraron datos"
+        }  # Manejo de ningún dato encontrado
 
 @app.get("/personas")
 def get_personas01():

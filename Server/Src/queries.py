@@ -65,6 +65,22 @@ def execute_query(query):
 def get_animales():
     return execute_query("SELECT * FROM animal")
 
+@app.get("/animalesl")
+def get_animalesl():
+    return execute_query("SELECT * FROM animal WHERE categoria = 'Lechería'")
+
+@app.get("/animalesg")
+def get_animalesg():
+    return execute_query("SELECT * FROM animal WHERE categoria = 'Genética'")
+
+@app.get("/animalese")
+def get_animalese():
+    return execute_query("SELECT * FROM animal WHERE categoria = 'Engorde'")
+
+@app.get("/corrales")
+def get_corral():
+    return execute_query("SELECT * FROM corral")
+
 @app.get("/personas")
 def get_personas():
     return execute_query("SELECT * FROM persona")
