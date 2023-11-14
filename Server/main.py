@@ -1,7 +1,18 @@
 # main.py
 from typing import Union
 from fastapi import FastAPI, HTTPException, Request
-from Src.queries import get_animales, get_animalese, get_animalesg, get_animalesl, get_corral, get_personas, get_rentabilidad, get_ventas, login_query, User
+from Src.queries import (
+    get_animales,
+    get_animalese,
+    get_animalesg,
+    get_animalesl,
+    get_corral,
+    get_personas,
+    get_rentabilidad,
+    get_ventas,
+    login_query,
+    User,
+)
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import psycopg2
@@ -12,11 +23,12 @@ app = FastAPI()
 origins = ["http://localhost", "http://localhost:3000"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 class User(BaseModel):
     nombre: str
@@ -33,8 +45,9 @@ def get_animales01():
         return {
             "message": "No se encontraron datos"
         }  # Manejo de ningún dato encontrado
-    
-@app.get("/animalesl")
+
+
+@app.get("/animales/lecheria")
 def get_animales02():
     data = get_animalesl()  # Obtiene los datos de la tabla "animal-lecheria"
 
@@ -45,7 +58,8 @@ def get_animales02():
             "message": "No se encontraron datos"
         }  # Manejo de ningún dato encontrado
 
-@app.get("/animalesg")
+
+@app.get("/animales/genetica")
 def get_animales03():
     data = get_animalesg()  # Obtiene los datos de la tabla "animal-genetica"
 
@@ -56,7 +70,8 @@ def get_animales03():
             "message": "No se encontraron datos"
         }  # Manejo de ningún dato encontrado
 
-@app.get("/animalese")
+
+@app.get("/animales/engorde")
 def get_animales04():
     data = get_animalese()  # Obtiene los datos de la tabla "animal-engorde"
 
@@ -66,7 +81,8 @@ def get_animales04():
         return {
             "message": "No se encontraron datos"
         }  # Manejo de ningún dato encontrado
-    
+
+
 @app.get("/corrales")
 def get_corral01():
     data = get_corral()  # Obtiene los datos de la tabla "animal"
@@ -77,6 +93,7 @@ def get_corral01():
         return {
             "message": "No se encontraron datos"
         }  # Manejo de ningún dato encontrado
+
 
 @app.get("/personas")
 def get_personas01():
@@ -113,9 +130,11 @@ def get_rentabilidad01():
             "message": "No se encontraron datos"
         }  # Manejo de ningún dato encontrado
 
+
 from fastapi import Depends
 
 # ...
+
 
 @app.post("/login")
 def login(user: User):
@@ -124,4 +143,6 @@ def login(user: User):
     if data is not None:
         return {"datos": data}
     else:
-        return {"message": "No se encontraron datos"}  # Manejo de ningún dato encontrado
+        return {
+            "message": "No se encontraron datos"
+        }  # Manejo de ningún dato encontrado

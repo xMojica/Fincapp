@@ -2,6 +2,8 @@ instalar python con el path
 
 pip install -r
 
+pip install psycopg2
+
 pip install fastapi
 instalar FastApi en la carpeta raiz del servidor, en este caso es server
 
