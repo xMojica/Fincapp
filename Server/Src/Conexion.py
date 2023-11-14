@@ -14,6 +14,6 @@ try:
     for row in rows:
         print(row)
     cursor.close()
-    connection.close()
+    Connection.close()
 except Exception as ex:
     print(ex)
