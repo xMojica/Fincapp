@@ -20,7 +20,7 @@ ul {
 }
 
 h1 {
-  display: flex;
+  margin-top: 20px;
   justify-content: center;
   font-size: 2rem;
 }
@@ -38,7 +38,7 @@ li {
 }
 
 li:hover {
-  background-color: #ba6c6c;
+  background-color: #d24c4c;
   color: rgb(0, 0, 0);
 }
 
@@ -48,17 +48,26 @@ main {
   height: 100vh;
   margin: 0 70px;
 }
+
 .contenedor_main {
   color: white;
+  height: auto;
+  max-height: 65rem;
   margin: 0 auto;
   background-color: #231d1d;
   border-radius: 20px;
-  margin: 70px;
   width: auto;
+  text-align: center;
+}
+
+h2 {
+  margin-top: 20px;
+  justify-content: center;
+  font-size: 2rem;
 }
 
 .contenedor_tabla {
-  margin: 70px;
+  margin: 70px 70px 0px;
   border-radius: 20px;
   background-color: white;
   color: black;
@@ -73,6 +82,31 @@ table {
 }
 
 td {
-  width: 17%;
+  width: 18%;
   text-align: center;
+  font-size: 16px; /* Puedes ajustar este valor según tus preferencias */
+}
+
+.boton-agregar {
+  height: 40px;
+  width: 100px;
+  background-color: #d24c4c;
+  color: white;
+  padding: 10px 20px; /* Ajusta el relleno según sea necesario */
+  border: none;
+  border-radius: 10px; /* Ajusta el redondeo de los bordes según sea necesario */
+  cursor: pointer;
+  margin: 30px auto 30px;
+  font-size: 18px;
+}
+
+.icono-edicion {
+  background-color: rgb(255, 174, 0);
+  width: 32px; /* Ancho fijo */
+  height: 32px; /* Alto fijo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px; /* Ajusta el redondeo de los bordes según sea necesario */
+  cursor: pointer;
 }
