@@ -85,7 +85,7 @@ td {
   border-radius: 5px; /* Ajusta el redondeo de los bordes según sea necesario */
   cursor: pointer;
   display: block;
-  margin: 20px auto 40px; /* Centra el botón horizontalmente y agrega margen inferior */
+  margin: 20px auto 60px; /* Centra el botón horizontalmente y agrega margen inferior */
 }
 .icono-edicion {
   background-color: rgb(255, 174, 0);
