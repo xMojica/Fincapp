@@ -75,4 +75,25 @@ table {
 td {
   width: 17%;
   text-align: center;
+  font-size: 14px; /* Puedes ajustar este valor según tus preferencias */
 }
+.boton-agregar {
+  background-color: blue;
+  color: white;
+  padding: 10px 20px; /* Ajusta el relleno según sea necesario */
+  border: none;
+  border-radius: 5px; /* Ajusta el redondeo de los bordes según sea necesario */
+  cursor: pointer;
+  display: block;
+  margin: 20px auto 40px; /* Centra el botón horizontalmente y agrega margen inferior */
+}
+.icono-edicion {
+  background-color: rgb(255, 174, 0);
+  width: 32px; /* Ancho fijo */
+  height: 32px; /* Alto fijo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px; /* Ajusta el redondeo de los bordes según sea necesario */
+}
+
