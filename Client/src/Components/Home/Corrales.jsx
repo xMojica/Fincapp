@@ -32,14 +32,16 @@ function Corrales() {
                             <thead>
                                 <tr key={"corral"} >
                                     <th>Id</th>
-                                    <th>Raza</th>
+                                    <th>Capacidad</th>
+                                    <th>Dimension</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {datos && datos.map((fila, index) => (
                                     <tr key={index.id}>
                                         <td className="td-id">{fila[0]}</td>
-                                        <td className="td-nombre">{fila[1]}</td>
+                                        <td className="td-nombre">{fila[1]} animales</td>
+                                        <td className="td-nombre">{fila[2]}</td>
                                         <td>
                                             <div className="icono-edicion">
                                                 <EditIcon />

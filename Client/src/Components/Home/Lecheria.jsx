@@ -31,7 +31,7 @@ function Lecheria() {
                     <div className='contenedor_tabla'>
                         <table>
                             <thead>
-                                <tr key={"tr"}>
+                                <tr key={"Lecheria"}>
                                     <th>Id</th>
                                     <th>Raza</th>
                                     <th>Peso</th>
@@ -45,9 +45,10 @@ function Lecheria() {
                                     <tr key={index.id}>
                                         <td className="td-id">{fila[0]}</td>
                                         <td className="td-nombre">{fila[1]}</td>
-                                        <td className="td-apellido">{fila[2]}</td>
-                                        <td className="td-contacto">{fila[3]}</td>
-                                        <td className="td-area">{fila[4]}</td>
+                                        <td className="td-apellido">{fila[2]} Kg</td>
+                                        <td className="td-contacto">{fila[11]} Litros</td>
+                                        <td className="td-contacto">{fila[8]}</td>
+                                        <td className="td-area">{fila[12]}</td>
                                         <td>
                                             <div className="icono-edicion">
                                                 <EditIcon />
