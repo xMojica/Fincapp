@@ -1,5 +1,3 @@
-// Formulario.js
-/* eslint-disable no-undef */
 import "./Formulario.css"
 import React, { useState } from 'react';
 
@@ -94,8 +92,8 @@ const Formulario = ({ onClose, onAgregar }) => {
         <label htmlFor="fechaIngreso">Fecha de Ingreso:</label>
         <input type="date" id="fechaIngreso" value={fechaIngreso} onChange={(e) => setFechaIngreso(e.target.value)} />
 
-       {/* Campo de Categoría */}
-       <label htmlFor="categoria">Categoría:</label>
+        {/* Campo de Categoría */}
+        <label htmlFor="categoria">Categoría:</label>
         <input type="text" id="categoria" value={categoria} readOnly />
 
         {/* Campo de Cantidad de Leche */}
