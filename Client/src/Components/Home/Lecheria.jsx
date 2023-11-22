@@ -9,6 +9,8 @@ function Lecheria() {
 
     const [datos, setDatos] = useState([]);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    const [band, setBand] = useState(false);
+    const [posicion, setPosicion] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,7 +32,18 @@ function Lecheria() {
         // Por ejemplo, podrías hacer una solicitud POST al servidor
         // y luego actualizar la lista de datos con el nuevo animal
         setDatos([...datos, nuevoAnimal]);
+
+        axios.put("http://127.0.0.1:8000/animales/lecheria", nuevoAnimal)
+            .then(response => {
+                console.log('PUT request successful:', response.data);
+            })
+            .catch(error => {
+                console.error('Error making PUT request:', error);
+            });
+
     };
+
+
 
     return (
         <div className="contenedor">
@@ -60,7 +73,11 @@ function Lecheria() {
                                         <td className="td-contacto">{fila[8]}</td>
                                         <td className="td-area">{fila[12]}</td>
                                         <td>
-                                            <div className="icono-edicion">
+                                            <div className="icono-edicion" onClick={() => {
+                                                setMostrarFormulario(true);
+                                                setBand(true)
+                                                setPosicion(index)
+                                            }} >
                                                 <EditIcon />
                                             </div>
                                         </td>
@@ -69,19 +86,24 @@ function Lecheria() {
                             </tbody>
                         </table>
                     </div>
-                    <button className="boton-agregar" onClick={() => setMostrarFormulario(true)}>Agregar</button>
-
-                    {/* Muestra el formulario solo si mostrarFormulario es verdadero */}
+                    <button className="boton-agregar" onClick={() => {
+                        setMostrarFormulario(true)
+                        setBand(false)
+                    }}>Agregar</button>
                     {mostrarFormulario && (
                         <Formulario
-                        onClose={() => setMostrarFormulario(false)}
-                        onAgregar={handleAgregar}
-                    />                   
-                    )}                
+                            onClose={() => setMostrarFormulario(false)}
+                            onAgregar={handleAgregar}
+                            bandera={band}
+                            objeto={datos[posicion]}
+                        />
+                    )}
                 </div>
-            </main>
-        </div>
+            </main >
+        </div >
     )
+
+
 }
 
 export default Lecheria

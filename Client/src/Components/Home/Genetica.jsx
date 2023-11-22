@@ -49,7 +49,7 @@ function Genetica() {
                                         <td className="td-contacto">{fila[8]}</td>
                                         <td className="td-area">{fila[12]}</td>
                                         <td>
-                                            <div className="icono-edicion">
+                                            <div className="icono-edicion" >
                                                 <EditIcon />
                                             </div>
                                         </td>

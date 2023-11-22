@@ -1,7 +1,7 @@
 import "./Formulario.css"
 import React, { useState } from 'react';
 
-const Formulario = ({ onClose, onAgregar }) => {
+const Formulario = ({ onClose, onAgregar, bandera, objeto }) => {
   const [id, setId] = useState('');
   const [raza, setRaza] = useState('');
   const [peso, setPeso] = useState('');
@@ -57,57 +57,112 @@ const Formulario = ({ onClose, onAgregar }) => {
     return edad;
   };
 
-  return (
-    <div className="formulario-container">
-      <h3>Agregar Nuevo Animal</h3>
-      <form>
-        {/* Campo de ID */}
-        <label htmlFor="id">ID:</label>
-        <input type="text" id="id" value={id} onChange={(e) => setId(e.target.value)} />
+  if (bandera === true) {
+    return (
+      <div className="formulario-container">
+        <h3>Editar Animal</h3>
+        <form>
+          {/* Campo de ID */}
+          <label htmlFor="id">ID:</label>
+          <input type="text" id="id" value={objeto[0]} onChange={(e) => setId(e.target.value)} readOnly />
 
-        {/* Campo de Raza */}
-        <label htmlFor="raza">Raza:</label>
-        <input type="text" id="raza" value={raza} onChange={(e) => setRaza(e.target.value)} />
+          {/* Campo de Raza */}
+          <label htmlFor="raza">Raza:</label>
+          <input type="text" id="raza" value={objeto[1]} onChange={(e) => setRaza(e.target.value)} />
 
-        {/* Campo de Peso */}
-        <label htmlFor="peso">Peso:</label>
-        <input type="number" id="peso" value={peso} onChange={(e) => setPeso(e.target.value)} />
+          {/* Campo de Peso */}
+          <label htmlFor="peso">Peso:</label>
+          <input type="number" id="peso" value={objeto[2]} onChange={(e) => setPeso(e.target.value)} />
 
-        {/* Campo de Color */}
-        <label htmlFor="color">Color:</label>
-        <input type="text" id="color" value={color} onChange={(e) => setColor(e.target.value)} />
+          {/* Campo de Color */}
+          <label htmlFor="color">Color:</label>
+          <input type="text" id="color" value={objeto[3]} onChange={(e) => setColor(e.target.value)} />
 
-        {/* Campo de Sexo */}
-        <label htmlFor="sexo">Sexo:</label>
-        <select id="sexo" value={sexo} onChange={(e) => setSexo(e.target.value)}>
-          <option value="M">Masculino</option>
-          <option value="F">Femenino</option>
-        </select>
+          {/* Campo de Sexo */}
+          <label htmlFor="sexo">Sexo:</label>
+          <select id="sexo" value={objeto[4]} onChange={(e) => setSexo(e.target.value)}>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
 
-        {/* Campo de Fecha de Nacimiento */}
-        <label htmlFor="fechaNacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fechaNacimiento" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} />
+          {/* Campo de Fecha de Nacimiento */}
+          <label htmlFor="fechaNacimiento">Fecha de Nacimiento:</label>
+          <input type="date" id="fechaNacimiento" value={objeto[5]} onChange={(e) => setFechaNacimiento(e.target.value)} />
 
-        {/* Campo de Fecha de Ingreso */}
-        <label htmlFor="fechaIngreso">Fecha de Ingreso:</label>
-        <input type="date" id="fechaIngreso" value={fechaIngreso} onChange={(e) => setFechaIngreso(e.target.value)} />
+          {/* Campo de Fecha de Ingreso */}
+          <label htmlFor="fechaIngreso">Fecha de Ingreso:</label>
+          <input type="date" id="fechaIngreso" value={objeto[6]} onChange={(e) => setFechaIngreso(e.target.value)} />
 
-        {/* Campo de Categoría */}
-        <label htmlFor="categoria">Categoría:</label>
-        <input type="text" id="categoria" value={categoria} readOnly />
+          {/* Campo de Categoría */}
+          <label htmlFor="categoria">Categoría:</label>
+          <input type="text" id="categoria" value={objeto[10]} readOnly />
 
-        {/* Campo de Cantidad de Leche */}
-        <label htmlFor="cantidadLeche">Cantidad de Leche:</label>
-        <input type="number" id="cantidadLeche" value={cantidadLeche} onChange={(e) => setCantidadLeche(e.target.value)} />
-        {/* Campo de Corral ID */}
-        <label htmlFor="corralId">Corral ID:</label>
-        <input type="number" id="corralId" value={corralId} onChange={(e) => setCorralId(e.target.value)} />
+          {/* Campo de Cantidad de Leche */}
+          <label htmlFor="cantidadLeche">Cantidad de Leche:</label>
+          <input type="number" id="cantidadLeche" value={objeto[11]} onChange={(e) => setCantidadLeche(e.target.value)} />
+          {/* Campo de Corral ID */}
+          <label htmlFor="corralId">Corral ID:</label>
+          <input type="number" id="corralId" value={objeto[12]} onChange={(e) => setCorralId(e.target.value)} />
 
-        <button className="agregar" type="button" onClick={handleAgregar}>Agregar</button>
-        <button className="cancelar" type="button" onClick={onClose}>Cancelar</button>
-      </form>
-    </div>
-  );
+          <button className="agregar" type="button" onClick={handleAgregar}>Editar</button>
+          <button className="cancelar" type="button" onClick={onClose}>Cancelar</button>
+        </form>
+      </div>
+    );
+  } else {
+
+    return (
+      <div className="formulario-container">
+        <h3>Agregar Nuevo Animal</h3>
+        <form>
+          {/* Campo de ID */}
+          <label htmlFor="id">ID:</label>
+          <input type="text" id="id" value={id} onChange={(e) => setId(e.target.value)} />
+
+          {/* Campo de Raza */}
+          <label htmlFor="raza">Raza:</label>
+          <input type="text" id="raza" value={raza} onChange={(e) => setRaza(e.target.value)} />
+
+          {/* Campo de Peso */}
+          <label htmlFor="peso">Peso:</label>
+          <input type="number" id="peso" value={peso} onChange={(e) => setPeso(e.target.value)} />
+
+          {/* Campo de Color */}
+          <label htmlFor="color">Color:</label>
+          <input type="text" id="color" value={color} onChange={(e) => setColor(e.target.value)} />
+
+          {/* Campo de Sexo */}
+          <label htmlFor="sexo">Sexo:</label>
+          <select id="sexo" value={sexo} onChange={(e) => setSexo(e.target.value)}>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+
+          {/* Campo de Fecha de Nacimiento */}
+          <label htmlFor="fechaNacimiento">Fecha de Nacimiento:</label>
+          <input type="date" id="fechaNacimiento" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} />
+
+          {/* Campo de Fecha de Ingreso */}
+          <label htmlFor="fechaIngreso">Fecha de Ingreso:</label>
+          <input type="date" id="fechaIngreso" value={fechaIngreso} onChange={(e) => setFechaIngreso(e.target.value)} />
+
+          {/* Campo de Categoría */}
+          <label htmlFor="categoria">Categoría:</label>
+          <input type="text" id="categoria" value={categoria} readOnly />
+
+          {/* Campo de Cantidad de Leche */}
+          <label htmlFor="cantidadLeche">Cantidad de Leche:</label>
+          <input type="number" id="cantidadLeche" value={cantidadLeche} onChange={(e) => setCantidadLeche(e.target.value)} />
+          {/* Campo de Corral ID */}
+          <label htmlFor="corralId">Corral ID:</label>
+          <input type="number" id="corralId" value={corralId} onChange={(e) => setCorralId(e.target.value)} />
+
+          <button className="agregar" type="button" onClick={handleAgregar}>Agregar</button>
+          <button className="cancelar" type="button" onClick={onClose}>Cancelar</button>
+        </form>
+      </div>
+    );
+  }
 };
 
 export default Formulario;

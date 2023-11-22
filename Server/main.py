@@ -30,11 +30,6 @@ app.add_middleware(
 )
 
 
-class User(BaseModel):
-    nombre: str
-    apellido: str
-
-
 @app.get("/animales")
 def get_animales01():
     data = get_animales()  # Obtiene los datos de la tabla "animal"
@@ -57,6 +52,11 @@ def get_animales02():
         return {
             "message": "No se encontraron datos"
         }  # Manejo de ningún dato encontrado
+
+
+@app.put("/animales/lecheria")
+def editarAnimales():
+    data = editarAnimales()  # Obtiene los datos de la tabla "animal-lecheria"
 
 
 @app.get("/animales/genetica")
