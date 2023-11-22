@@ -10,21 +10,23 @@ body {
   margin: 40% auto;
   justify-content: center;
   text-align: center;
-  background-color: rgb(237, 237, 237);
+  border: none;
   width: 20%;
   height: 4%;
   border-radius: 20px;
 }
 
 .log {
+  border: none;
   border-radius: 20px;
   width: 100%;
-  border: none;
   font-size: 50px;
+  background-color: #231d1d;
+  color: #d24c4c;
 }
 
 .log:hover {
-  background-color: black;
-  color: white;
+  background-color: #d24c4c;
+  color: #231d1d;
   cursor: pointer;
 }
