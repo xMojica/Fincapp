@@ -1,0 +1,67 @@
+/* Estilos para el contenedor del formulario */
+.formulario-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: black;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 999; /* Asegura que esté en la parte superior */
+    max-width: 80%; /* Ajusta el ancho máximo del formulario según tus preferencias */
+    width: 400px; /* Ajusta el ancho del formulario según tus preferencias */
+    height: 70vh;
+    overflow-y: scroll;
+    
+    border-radius: 8px; /* Bordes redondeados */
+  }
+  
+  /* Estilos para centrar el contenido del formulario */
+  .formulario-container h3 {
+    text-align: center;
+  }
+  
+  /* Estilos para los campos del formulario */
+  .formulario-container label {
+    display: block;
+    margin-bottom: 8px;
+    text-align: left; /* Alinea el texto a la izquierda */
+  }
+  
+  .formulario-container input,
+  .formulario-container select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box; /* Incluye el padding en el ancho total del elemento */
+    border-radius: 4px; /* Bordes redondeados para los campos */
+    border: 1px solid #ccc; /* Borde para los campos */
+  }
+  
+  /* Estilos para los botones del formulario */
+  .formulario-container button {
+    width: 48%; /* Ocupa el 48% del ancho del contenedor */
+    padding: 8px 16px;
+    margin-right: 4%; /* Espacio entre los botones */
+    cursor: pointer;
+    border-radius: 4px; /* Bordes redondeados para los botones */
+    border: none; /* Elimina el borde */
+  }
+  
+  /* Estilo específico para el fondo de color de los botones */
+  .formulario-container button.agregar {
+    background-color: #d24c4c;
+    color: white;
+  }
+  
+  .formulario-container button.cancelar {
+    background-color: #d24c4c;
+    color: white;
+  }
+  
+  /* Estilo para el botón de Cancelar */
+  .formulario-container button:last-child {
+    margin-right: 0; /* Elimina el margen derecho para el último botón */
+  }
+  

@@ -2,9 +2,13 @@ import "./Home.css"
 import React, { useState, useEffect } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import Aside from './Aside';
+import Formulario from '../Form/Formulario'; // Importa el componente del formulario
+
 
 function Engorde() {
     const [datos, setDatos] = useState([]);
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,6 +24,13 @@ function Engorde() {
 
         fetchData();
     }, []);
+
+    const handleAgregar = (nuevoAnimal) => {
+        // Implementa la lógica para agregar el nuevo animal a la lista o enviarlo al servidor
+        // Por ejemplo, podrías hacer una solicitud POST al servidor
+        // y luego actualizar la lista de datos con el nuevo animal
+        setDatos([...datos, nuevoAnimal]);
+    };
 
     return (
         <div className="contenedor">
@@ -58,11 +69,20 @@ function Engorde() {
                             </tbody>
                         </table>
                     </div>
-                    <button className="boton-agregar">Agregar</button>
+                    <button className="boton-agregar" onClick={() => setMostrarFormulario(true)}>Agregar</button>
+
+                    {/* Muestra el formulario solo si mostrarFormulario es verdadero */}
+                    {mostrarFormulario && (
+                         <Formulario
+                         onClose={() => setMostrarFormulario(false)}
+                         onAgregar={handleAgregar}
+                          />
+                         
+                    )}
                 </div>
             </main>
         </div>
     )
 }
 
-export default Engorde
+export default Engorde;
