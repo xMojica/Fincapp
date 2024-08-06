@@ -1,0 +1,85 @@
+--Crear:
+
+DROP TABLE IF EXISTS animal;
+DROP TABLE IF EXISTS corral;
+
+CREATE TABLE corral (
+    id VARCHAR(4) PRIMARY KEY,
+    capacidad INTEGER NOT NULL,
+    cantidad_animales INTEGER NOT NULL
+);
+
+
+CREATE TABLE animal (
+    id VARCHAR(4) PRIMARY KEY,
+    raza VARCHAR(255) NOT NULL,
+    peso NUMERIC NOT NULL,
+    color VARCHAR(255) NOT NULL,
+    precio_ingreso NUMERIC NOT NULL,
+    precio_salida NUMERIC,
+    fecha_ingreso DATE NOT NULL,
+    fecha_salida DATE,
+    imagen VARCHAR(255),
+    corral_id VARCHAR(4),
+    CONSTRAINT fk_corral
+        FOREIGN KEY(corral_id) 
+            REFERENCES corral(id)
+            ON DELETE SET NULL
+);
+
+ALTER TABLE corral
+    ALTER COLUMN id SET DEFAULT 'C' || LPAD(nextval('corral_id_seq')::TEXT, 3, '0');
+	
+ALTER TABLE animal
+    ALTER COLUMN id SET DEFAULT 'A' || LPAD(nextval('animal_id_seq')::TEXT, 3, '0');
+	
+CREATE OR REPLACE FUNCTION actualizar_cantidad_animales() 
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Manejar el caso de inserción de un nuevo animal
+    IF TG_OP = 'INSERT' THEN
+        UPDATE corral
+        SET cantidad_animales = cantidad_animales + 1
+        WHERE id = NEW.corral_id;
+    -- Manejar el caso de eliminación de un animal
+    ELSIF TG_OP = 'DELETE' THEN
+        UPDATE corral
+        SET cantidad_animales = cantidad_animales - 1
+        WHERE id = OLD.corral_id;
+    -- Manejar el caso de actualización de un animal
+    ELSIF TG_OP = 'UPDATE' THEN
+        -- Primero, actualizamos el corral antiguo si se está moviendo el animal a otro corral
+        IF OLD.corral_id IS DISTINCT FROM NEW.corral_id THEN
+            UPDATE corral
+            SET cantidad_animales = cantidad_animales - 1
+            WHERE id = OLD.corral_id;
+            UPDATE corral
+            SET cantidad_animales = cantidad_animales + 1
+            WHERE id = NEW.corral_id;
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_actualizar_cantidad_animales
+AFTER INSERT OR DELETE OR UPDATE ON animal
+FOR EACH ROW
+EXECUTE FUNCTION actualizar_cantidad_animales();
+
+
+-- Datos:
+INSERT INTO corral (capacidad, cantidad_animales) VALUES
+(20, 0),
+(25, 0),
+(15, 0),
+(30, 0);
+
+
+INSERT INTO animal (
+    raza, peso, color, precio_ingreso, precio_salida, 
+    fecha_ingreso, fecha_salida, imagen
+) VALUES
+('Holstein', 658, 'Blanco y negro', 570000, NULL, '2024-06-23', NULL, 'http://dummyimage.com/119x142.png/dddddd/000000'),
+('Jersey', 450, 'Marrón', 450000, NULL, '2024-07-01', NULL, 'http://dummyimage.com/119x142.png/ff0000/ffffff');
+
