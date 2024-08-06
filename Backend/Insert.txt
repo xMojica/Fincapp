@@ -1,17 +1,26 @@
---Crear:
-
+-- Eliminar tablas existentes si existen
 DROP TABLE IF EXISTS animal;
 DROP TABLE IF EXISTS corral;
 
+
+
+
+-- Crear secuencias para IDs personalizados
+DROP SEQUENCE IF EXISTS corral_id_seq;
+DROP SEQUENCE IF EXISTS animal_id_seq;
+CREATE SEQUENCE corral_id_seq START 1;
+CREATE SEQUENCE animal_id_seq START 1;
+
+-- Crear tabla corral
 CREATE TABLE corral (
-    id VARCHAR(4) PRIMARY KEY,
+    id VARCHAR(4) PRIMARY KEY DEFAULT 'C' || LPAD(nextval('corral_id_seq')::TEXT, 3, '0'),
     capacidad INTEGER NOT NULL,
-    cantidad_animales INTEGER NOT NULL
+    cantidad_animales INTEGER NOT NULL DEFAULT 0
 );
 
-
+-- Crear tabla animal
 CREATE TABLE animal (
-    id VARCHAR(4) PRIMARY KEY,
+    id VARCHAR(4) PRIMARY KEY DEFAULT 'A' || LPAD(nextval('animal_id_seq')::TEXT, 3, '0'),
     raza VARCHAR(255) NOT NULL,
     peso NUMERIC NOT NULL,
     color VARCHAR(255) NOT NULL,
@@ -27,59 +36,82 @@ CREATE TABLE animal (
             ON DELETE SET NULL
 );
 
-ALTER TABLE corral
-    ALTER COLUMN id SET DEFAULT 'C' || LPAD(nextval('corral_id_seq')::TEXT, 3, '0');
-	
-ALTER TABLE animal
-    ALTER COLUMN id SET DEFAULT 'A' || LPAD(nextval('animal_id_seq')::TEXT, 3, '0');
-	
+-- Crear función para actualizar la cantidad de animales en corral
 CREATE OR REPLACE FUNCTION actualizar_cantidad_animales() 
 RETURNS TRIGGER AS $$
 BEGIN
     -- Manejar el caso de inserción de un nuevo animal
     IF TG_OP = 'INSERT' THEN
-        UPDATE corral
-        SET cantidad_animales = cantidad_animales + 1
-        WHERE id = NEW.corral_id;
+        IF NEW.corral_id IS NOT NULL THEN
+            IF (SELECT cantidad_animales FROM corral WHERE id = NEW.corral_id) < (SELECT capacidad FROM corral WHERE id = NEW.corral_id) THEN
+                UPDATE corral
+                SET cantidad_animales = cantidad_animales + 1
+                WHERE id = NEW.corral_id;
+            ELSE
+                RAISE EXCEPTION 'El corral está lleno';
+            END IF;
+        END IF;
     -- Manejar el caso de eliminación de un animal
     ELSIF TG_OP = 'DELETE' THEN
-        UPDATE corral
-        SET cantidad_animales = cantidad_animales - 1
-        WHERE id = OLD.corral_id;
+        IF OLD.corral_id IS NOT NULL THEN
+            UPDATE corral
+            SET cantidad_animales = cantidad_animales - 1
+            WHERE id = OLD.corral_id;
+        END IF;
     -- Manejar el caso de actualización de un animal
     ELSIF TG_OP = 'UPDATE' THEN
         -- Primero, actualizamos el corral antiguo si se está moviendo el animal a otro corral
         IF OLD.corral_id IS DISTINCT FROM NEW.corral_id THEN
-            UPDATE corral
-            SET cantidad_animales = cantidad_animales - 1
-            WHERE id = OLD.corral_id;
-            UPDATE corral
-            SET cantidad_animales = cantidad_animales + 1
-            WHERE id = NEW.corral_id;
+            IF OLD.corral_id IS NOT NULL THEN
+                -- Reducimos la cantidad en el corral antiguo
+                UPDATE corral
+                SET cantidad_animales = cantidad_animales - 1
+                WHERE id = OLD.corral_id;
+            END IF;
+
+            IF NEW.corral_id IS NOT NULL THEN
+                -- Verificamos si hay espacio en el nuevo corral antes de aumentar la cantidad
+                IF (SELECT cantidad_animales FROM corral WHERE id = NEW.corral_id) < (SELECT capacidad FROM corral WHERE id = NEW.corral_id) THEN
+                    UPDATE corral
+                    SET cantidad_animales = cantidad_animales + 1
+                    WHERE id = NEW.corral_id;
+                ELSE
+                    -- Restauramos la cantidad en el corral antiguo si no hay espacio en el nuevo corral
+                    IF OLD.corral_id IS NOT NULL THEN
+                        UPDATE corral
+                        SET cantidad_animales = cantidad_animales + 1
+                        WHERE id = OLD.corral_id;
+                    END IF;
+                    RAISE EXCEPTION 'El corral nuevo está lleno';
+                END IF;
+            END IF;
         END IF;
     END IF;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
+-- Crear el trigger que usa la función anterior
 CREATE TRIGGER trigger_actualizar_cantidad_animales
 AFTER INSERT OR DELETE OR UPDATE ON animal
 FOR EACH ROW
 EXECUTE FUNCTION actualizar_cantidad_animales();
 
-
--- Datos:
+-- Insertar datos iniciales en corral
 INSERT INTO corral (capacidad, cantidad_animales) VALUES
 (20, 0),
 (25, 0),
 (15, 0),
 (30, 0);
 
-
+-- Insertar datos iniciales en animal
 INSERT INTO animal (
     raza, peso, color, precio_ingreso, precio_salida, 
-    fecha_ingreso, fecha_salida, imagen
+    fecha_ingreso, fecha_salida, imagen, corral_id
 ) VALUES
-('Holstein', 658, 'Blanco y negro', 570000, NULL, '2024-06-23', NULL, 'http://dummyimage.com/119x142.png/dddddd/000000'),
-('Jersey', 450, 'Marrón', 450000, NULL, '2024-07-01', NULL, 'http://dummyimage.com/119x142.png/ff0000/ffffff');
+('Holstein', 658, 'Blanco y negro', 570000, NULL, '2024-06-23', NULL, 'http://dummyimage.com/119x142.png/dddddd/000000', 'C001'),
+('Jersey', 450, 'Marrón', 450000, NULL, '2024-07-01', NULL, 'http://dummyimage.com/119x142.png/ff0000/ffffff', 'C002');
 
+-- Reiniciar secuencias
+SELECT setval('corral_id_seq', (SELECT COALESCE(MAX(CAST(SUBSTRING(id, 2) AS INTEGER)), 0) FROM corral));
+SELECT setval('animal_id_seq', (SELECT COALESCE(MAX(CAST(SUBSTRING(id, 2) AS INTEGER)), 0) FROM animal));
