@@ -1,117 +1,71 @@
--- Eliminar tablas existentes si existen
-DROP TABLE IF EXISTS animal;
-DROP TABLE IF EXISTS corral;
+DROP TABLE IF EXISTS Animal;
+DROP TABLE IF EXISTS Corral;
+DROP TABLE IF EXISTS Corral;
+
+CREATE SEQUENCE animal_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE SEQUENCE corral_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
-
-
--- Crear secuencias para IDs personalizados
-DROP SEQUENCE IF EXISTS corral_id_seq;
-DROP SEQUENCE IF EXISTS animal_id_seq;
-CREATE SEQUENCE corral_id_seq START 1;
-CREATE SEQUENCE animal_id_seq START 1;
-
--- Crear tabla corral
-CREATE TABLE corral (
-    id VARCHAR(4) PRIMARY KEY DEFAULT 'C' || LPAD(nextval('corral_id_seq')::TEXT, 3, '0'),
-    capacidad INTEGER NOT NULL,
-    cantidad_animales INTEGER NOT NULL DEFAULT 0
+CREATE TABLE Persona (
+    Usuario VARCHAR(255) NOT NULL,
+    Contraseña VARCHAR(255) NOT NULL,
+    Nombre VARCHAR(255) NOT NULL,
+    Apellido VARCHAR(255) NOT NULL,
+    Correo VARCHAR(255) NOT NULL,
+    PRIMARY KEY (Usuario)
 );
 
--- Crear tabla animal
-CREATE TABLE animal (
-    id VARCHAR(4) PRIMARY KEY DEFAULT 'A' || LPAD(nextval('animal_id_seq')::TEXT, 3, '0'),
-    raza VARCHAR(255) NOT NULL,
-    peso NUMERIC NOT NULL,
-    color VARCHAR(255) NOT NULL,
-    precio_ingreso NUMERIC NOT NULL,
-    precio_salida NUMERIC,
-    fecha_ingreso DATE NOT NULL,
-    fecha_salida DATE,
-    imagen VARCHAR(255),
-    corral_id VARCHAR(4),
-    CONSTRAINT fk_corral
-        FOREIGN KEY(corral_id) 
-            REFERENCES corral(id)
-            ON DELETE SET NULL
+CREATE TABLE Corral (
+    Id VARCHAR(255) NOT NULL DEFAULT nextval('corral_id_seq'),
+    Capacidad INTEGER NOT NULL,
+    Area VARCHAR(255) NOT NULL,
+    Cantidad INTEGER NOT NULL DEFAULT 0,
+    Propietario VARCHAR(255) NOT NULL,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Propietario) REFERENCES Persona(Usuario)
 );
 
--- Crear función para actualizar la cantidad de animales en corral
-CREATE OR REPLACE FUNCTION actualizar_cantidad_animales() 
-RETURNS TRIGGER AS $$
-BEGIN
-    -- Manejar el caso de inserción de un nuevo animal
-    IF TG_OP = 'INSERT' THEN
-        IF NEW.corral_id IS NOT NULL THEN
-            IF (SELECT cantidad_animales FROM corral WHERE id = NEW.corral_id) < (SELECT capacidad FROM corral WHERE id = NEW.corral_id) THEN
-                UPDATE corral
-                SET cantidad_animales = cantidad_animales + 1
-                WHERE id = NEW.corral_id;
-            ELSE
-                RAISE EXCEPTION 'El corral está lleno';
-            END IF;
-        END IF;
-    -- Manejar el caso de eliminación de un animal
-    ELSIF TG_OP = 'DELETE' THEN
-        IF OLD.corral_id IS NOT NULL THEN
-            UPDATE corral
-            SET cantidad_animales = cantidad_animales - 1
-            WHERE id = OLD.corral_id;
-        END IF;
-    -- Manejar el caso de actualización de un animal
-    ELSIF TG_OP = 'UPDATE' THEN
-        -- Primero, actualizamos el corral antiguo si se está moviendo el animal a otro corral
-        IF OLD.corral_id IS DISTINCT FROM NEW.corral_id THEN
-            IF OLD.corral_id IS NOT NULL THEN
-                -- Reducimos la cantidad en el corral antiguo
-                UPDATE corral
-                SET cantidad_animales = cantidad_animales - 1
-                WHERE id = OLD.corral_id;
-            END IF;
+CREATE TABLE Animal (
+    Id VARCHAR(255) NOT NULL DEFAULT nextval('animal_id_seq'),
+    Raza VARCHAR(255) NOT NULL,
+    Peso INTEGER NOT NULL,
+    Color VARCHAR(255) NOT NULL,
+    Precio_ingreso INTEGER NOT NULL,
+    Precio_salida INTEGER NULL,
+    Fecha_ingreso DATE NOT NULL,
+    Fecha_salida DATE NULL,
+    Corral_Id VARCHAR(255) NOT NULL,
+    Propietario VARCHAR(255) NOT NULL,
+    PRIMARY KEY (Id),
+    FOREIGN KEY (Corral_Id) REFERENCES Corral(Id),
+    FOREIGN KEY (Propietario) REFERENCES Persona(Usuario)
+);
 
-            IF NEW.corral_id IS NOT NULL THEN
-                -- Verificamos si hay espacio en el nuevo corral antes de aumentar la cantidad
-                IF (SELECT cantidad_animales FROM corral WHERE id = NEW.corral_id) < (SELECT capacidad FROM corral WHERE id = NEW.corral_id) THEN
-                    UPDATE corral
-                    SET cantidad_animales = cantidad_animales + 1
-                    WHERE id = NEW.corral_id;
-                ELSE
-                    -- Restauramos la cantidad en el corral antiguo si no hay espacio en el nuevo corral
-                    IF OLD.corral_id IS NOT NULL THEN
-                        UPDATE corral
-                        SET cantidad_animales = cantidad_animales + 1
-                        WHERE id = OLD.corral_id;
-                    END IF;
-                    RAISE EXCEPTION 'El corral nuevo está lleno';
-                END IF;
-            END IF;
-        END IF;
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
 
--- Crear el trigger que usa la función anterior
-CREATE TRIGGER trigger_actualizar_cantidad_animales
-AFTER INSERT OR DELETE OR UPDATE ON animal
-FOR EACH ROW
-EXECUTE FUNCTION actualizar_cantidad_animales();
 
--- Insertar datos iniciales en corral
-INSERT INTO corral (capacidad, cantidad_animales) VALUES
-(20, 0),
-(25, 0),
-(15, 0),
-(30, 0);
+--Set de datos:
 
--- Insertar datos iniciales en animal
-INSERT INTO animal (
-    raza, peso, color, precio_ingreso, precio_salida, 
-    fecha_ingreso, fecha_salida, imagen, corral_id
-) VALUES
-('Holstein', 658, 'Blanco y negro', 570000, NULL, '2024-06-23', NULL, 'http://dummyimage.com/119x142.png/dddddd/000000', 'C001'),
-('Jersey', 450, 'Marrón', 450000, NULL, '2024-07-01', NULL, 'http://dummyimage.com/119x142.png/ff0000/ffffff', 'C002');
+INSERT INTO Persona (Usuario, Contraseña, Nombre, Apellido, Correo) VALUES
+('usuario1', 'contrasena1', 'Juan', 'Pérez', 'juan.perez@example.com'),
+('usuario2', 'contrasena2', 'María', 'López', 'maria.lopez@example.com');
 
--- Reiniciar secuencias
-SELECT setval('corral_id_seq', (SELECT COALESCE(MAX(CAST(SUBSTRING(id, 2) AS INTEGER)), 0) FROM corral));
-SELECT setval('animal_id_seq', (SELECT COALESCE(MAX(CAST(SUBSTRING(id, 2) AS INTEGER)), 0) FROM animal));
+
+INSERT INTO Corral (Capacidad, Area, Cantidad, Propietario) VALUES
+(10, '2 Hectareas', 0, 'usuario1'),
+(15, '4 Hectareas', 0, 'usuario2');
+
+INSERT INTO Animal (Raza, Peso, Color, Precio_ingreso, Precio_salida, Fecha_ingreso, Fecha_salida, Corral_Id, Propietario) VALUES
+('Angus', 500, 'Negro', 1500, NULL, '2024-01-15', NULL, '1', 'usuario1'),
+('Hereford', 600, 'Marrón', 1600, NULL, '2024-02-20', NULL, '1', 'usuario1'),
+('Brahman', 550, 'Blanco', 1550, NULL, '2024-03-05', NULL, '2', 'usuario2');

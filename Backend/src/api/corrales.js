@@ -38,8 +38,8 @@ router.post("/", async (req, res, next) => {
     try {
         const result = await pool.query(
             `
-            INSERT INTO corral (capacidad)
-            VALUES ($1)
+            INSERT INTO corral (capacidad, cantidad_animales)
+            VALUES ($1, $2)
             RETURNING *
         `,
             [capacidad, 0]

@@ -1,15 +1,8 @@
 const { Pool } = require("pg");
+require("dotenv").config();
 
-const pool = new Pool({
-    user: "fincapp_priw_user",
-    host: "cqop6po8fa8c73bvrp00-a.oregon-postgres.render.com",
-    database: "fincapp_priw",
-    password: "q1NjIQ1ddtd0I2DTXv3F2B4vTRi7zOXc",
-    port: 5432,
-    ssl: {
-        rejectUnauthorized: false,
-    },
-});
+const poolConfig = JSON.parse(process.env.POOL);
+const pool = new Pool(poolConfig);
 
 pool.on("connect", () => {
     console.log("Conexion con la base de datos exitosa!");
