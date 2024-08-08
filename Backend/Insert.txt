@@ -69,3 +69,66 @@ INSERT INTO Animal (Raza, Peso, Color, Precio_ingreso, Precio_salida, Fecha_ingr
 ('Angus', 500, 'Negro', 1500, NULL, '2024-01-15', NULL, '1', 'usuario1'),
 ('Hereford', 600, 'Marrón', 1600, NULL, '2024-02-20', NULL, '1', 'usuario1'),
 ('Brahman', 550, 'Blanco', 1550, NULL, '2024-03-05', NULL, '2', 'usuario2');
+
+
+--Funcion de actualizar corral y triggers:
+CREATE OR REPLACE FUNCTION actualizar_cantidad_corral()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Cuando se inserta un nuevo animal
+    IF TG_OP = 'INSERT' THEN
+        -- Verificar si el corral está lleno
+        IF (SELECT cantidad FROM corral WHERE id = NEW.corral_id) >= (SELECT capacidad FROM corral WHERE id = NEW.corral_id) THEN
+            RAISE EXCEPTION 'El corral % está lleno y no se puede agregar más animales.', NEW.corral_id;
+        END IF;
+        -- Incrementar la cantidad de animales en el corral
+        UPDATE corral
+        SET cantidad = cantidad + 1
+        WHERE id = NEW.corral_id;
+
+    -- Cuando se elimina un animal
+    ELSIF TG_OP = 'DELETE' THEN
+        -- Decrementar la cantidad de animales en el corral
+        UPDATE corral
+        SET cantidad = cantidad - 1
+        WHERE id = OLD.corral_id;
+
+    -- Cuando se actualiza el corral de un animal
+    ELSIF TG_OP = 'UPDATE' THEN
+        -- Verificar el nuevo corral
+        IF (SELECT cantidad FROM corral WHERE id = NEW.corral_id) >= (SELECT capacidad FROM corral WHERE id = NEW.corral_id) THEN
+            RAISE EXCEPTION 'El corral % está lleno y no se puede agregar más animales.', NEW.corral_id;
+        END IF;
+        -- Decrementar la cantidad de animales en el corral original
+        UPDATE corral
+        SET cantidad = cantidad - 1
+        WHERE id = OLD.corral_id;
+
+        -- Incrementar la cantidad de animales en el nuevo corral
+        UPDATE corral
+        SET cantidad = cantidad + 1
+        WHERE id = NEW.corral_id;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Trigger para manejar la inserción de animales
+CREATE TRIGGER trigger_actualizar_cantidad_insercion
+AFTER INSERT ON animal
+FOR EACH ROW
+EXECUTE FUNCTION actualizar_cantidad_corral();
+
+-- Trigger para manejar la eliminación de animales
+CREATE TRIGGER trigger_actualizar_cantidad_eliminacion
+AFTER DELETE ON animal
+FOR EACH ROW
+EXECUTE FUNCTION actualizar_cantidad_corral();
+
+-- Trigger para manejar la actualización del corral de un animal
+CREATE TRIGGER trigger_actualizar_cantidad_actualizacion
+AFTER UPDATE OF corral_id ON animal
+FOR EACH ROW
+EXECUTE FUNCTION actualizar_cantidad_corral();
