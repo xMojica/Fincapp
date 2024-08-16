@@ -1,7 +1,10 @@
+---
+import Iniciar from "./Iniciar";
+import Registrarse from "./Registrarse";
+---
+
 <header class="w-full bg-[--principal] absolute z-50">
-    <nav
-        class="h-max w-full p-8 flex flex-row justify-center lg:justify-between"
-    >
+    <nav class="h-max w-full p-8 flex flex-row justify-between">
         <div
             class="flex flex-col justify-center items-center lg:flex-row lg:gap-5"
         >
@@ -38,19 +41,12 @@
                 Contacto
             </p>
         </div>
-        <div
-            class="hidden flex flex-row items-center hover:cursor-pointer lg:flex"
-        >
-            <button
-                class="w-1/2 bg-violet-700 rounded-md p-3 hover:scale-110 transition-transform"
-            >
-                Iniciar
-            </button>
-            <button
-                class="w-1/2 p-3 rounded-r-2xl hover:text-violet-700 hover:scale-110 transition-transform"
-            >
-                Registrarse
-            </button>
+        <div class="hidden flex-row items-center hover:cursor-pointer lg:flex">
+            <Iniciar client:load />
+            <Registrarse client:load />
+        </div>
+        <div class="flex justify-center items-center lg:hidden">
+            <img class="w-10 h-10" src="/menu.svg" alt="Menu" />
         </div>
     </nav>
 </header>
