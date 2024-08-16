@@ -1,5 +1,5 @@
 {
-  "name": "fincapp2",
+  "name": "fincapp",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -10,6 +10,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.11.0"
+    "@astrojs/tailwind": "^5.1.0",
+    "@fontsource-variable/onest": "^5.0.4",
+    "astro": "^4.14.2",
+    "tailwindcss": "^3.4.10"
   }
 }
