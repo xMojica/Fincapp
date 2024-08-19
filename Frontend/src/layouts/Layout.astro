@@ -14,29 +14,27 @@ const { title } = Astro.props;
         <title>{title}</title>
     </head>
     <body>
-        <div class="container relative h-[100vh]">
-            <slot />
-        </div>
+        <slot />
     </body>
 </html>
 
 <style is:global>
     :root {
-        --principal: rgb(9, 9, 11);
-        --secundario: rgb(109 40 217);
-        color-scheme: light dark;
+        --principal: #09090b;
+        --secundario: #6d28d9;
+        --terciario: #ffffff;
+        /* color-scheme: light dark; */
     }
 
     html {
         font-family: "Onest Variable", sans-serif;
         font-weight: bold;
+        color: var(--terciario);
     }
 
     body {
         padding: 0;
         margin: 0;
-        background-color: rgb(9, 9, 11);
-        display: flex;
-        flex-direction: column;
+        background-color: var(--principal);
     }
 </style>

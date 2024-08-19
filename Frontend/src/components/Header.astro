@@ -1,52 +1,62 @@
----
-import Iniciar from "./Iniciar";
-import Registrarse from "./Registrarse";
----
-
-<header class="w-full bg-[--principal] absolute z-50">
-    <nav class="h-max w-full p-8 flex flex-row justify-between">
+<header class="w-full bg-[--principal] fixed top-0 z-50">
+    <nav class="w-full p-3 flex flex-row justify-between items-center">
         <div
-            class="flex flex-col justify-center items-center lg:flex-row lg:gap-5"
+            class="w-full flex flex-row justify-between items-center sm:w-auto sm:gap-5"
         >
             <img
-                class="w-16 h-16 hover:cursor-pointer hover:scale-110 transition-transform"
+                class="w-10 h-10 xl:w-20 xl:h-20 hover:cursor-pointer hover:scale-110 transition-transform"
                 src="/logo.svg"
                 alt="Logo"
             />
             <h1
-                class="text-4xl font-bold flex justify-center items-center hover:cursor-pointer"
+                class="text-2xl xl:text-4xl font-bold flex justify-center items-center hover:cursor-pointer hover:scale-110 transition-transform"
             >
-                Finc<span class="text-violet-700">App</span>
+                <a href="#">
+                    Finc<span class="text-[--secundario]">App</span>
+                </a>
             </h1>
+            <div class="flex sm:hidden">
+                <img class="w-7 h-7" src="/menu.svg" alt="Menu" />
+            </div>
         </div>
-        <div class="hidden flex-row items-center gap-8 lg:visible lg:flex">
+
+        <div class="hidden flex-row items-center gap-8 sm:visible sm:flex">
             <p
-                class="hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
+                class="text-lg xl:text-xl hover:cursor-pointer hover:text-[--secundario] hover:scale-110 transition-transform"
             >
                 Inicio
             </p>
             <p
-                class="hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
+                class="text-lg xl:text-xl hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
             >
                 Acerca
             </p>
             <p
-                class="hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
+                class="text-lg xl:text-xl hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
             >
                 Quien soy?
             </p>
             <p
-                class="hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
+                class="text-lg xl:text-xl hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
             >
                 Contacto
             </p>
         </div>
-        <div class="hidden flex-row items-center hover:cursor-pointer lg:flex">
-            <Iniciar client:load />
-            <Registrarse client:load />
-        </div>
-        <div class="flex justify-center items-center lg:hidden">
-            <img class="w-10 h-10" src="/menu.svg" alt="Menu" />
+        <div class="hidden w-64 flex-row hover:cursor-pointer lg:flex">
+            <a href="iniciar" class="w-1/2">
+                <button
+                    class="w-full bg-violet-700 rounded-md p-3 hover:scale-110 transition-transform"
+                >
+                    Iniciar
+                </button>
+            </a>
+            <a href="registrarse" class="w-1/2">
+                <button
+                    class="w-full rounded-md p-3 hover:text-violet-700 hover:scale-110 transition-transform"
+                >
+                    Registrarse
+                </button>
+            </a>
         </div>
     </nav>
 </header>
