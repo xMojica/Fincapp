@@ -7,13 +7,13 @@ import Footer from "../components/Footer.astro";
 <Layout title="Fincapp">
     <Header />
     <main
-        class="h-full flex flex-col justify-start items-center bg-[url('/fondo.svg')]"
+        class="h-full flex flex-col justify-start items-center bg-[var(--primario)]"
     >
         <h3 class="hidden text-3xl text-[--secundario] lg:mt-56 lg:flex">
             Fincapp
         </h3>
         <h1
-            class="flex flex-col text-center text-2xl mt-32 md:text-4xl lg:text-6xl lg:mt-8"
+            class="flex flex-col text-center text-2xl mt-32 sm:text-4xl lg:text-6xl lg:mt-8"
         >
             Aumenta la producción <span
                 class="flex justify-center text-center text-violet-700"
@@ -44,6 +44,10 @@ import Footer from "../components/Footer.astro";
             siguiente nivel. Aumenta tu producción, reduce costos y maximiza tus
             ganancias con un seguimiento detallado de cada animal.
         </p>
+        <div id="inicio">inicio</div>
+        <div id="acerca">acerca</div>
+        <div id="quienSoy">quienSoy</div>
+        <div id="contacto">contacto</div>
     </main>
     <Footer />
 </Layout>

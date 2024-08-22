@@ -1,3 +1,7 @@
+---
+import Hamburguesa from "./Hamburguesa";
+---
+
 <header class="w-full bg-[--principal] fixed top-0 left-0 z-50">
     <nav class="w-full p-5 flex flex-row justify-between items-center">
         <div
@@ -15,32 +19,38 @@
                     Finc<span class="text-[--secundario]">App</span>
                 </a>
             </h1>
-            <div class="flex sm:hidden mr-5">
-                <img class="w-6 h-6" src="/menu.svg" alt="Menu" />
-            </div>
+            <Hamburguesa client:load />
         </div>
 
         <div class="hidden flex-row items-center gap-8 sm:visible sm:flex">
-            <p
-                class="text-lg xl:text-xl hover:cursor-pointer hover:text-[--secundario] hover:scale-110 transition-transform"
-            >
-                Inicio
-            </p>
-            <p
-                class="text-lg xl:text-xl hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
-            >
-                Acerca
-            </p>
-            <p
-                class="text-lg xl:text-xl hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
-            >
-                Quien soy?
-            </p>
-            <p
-                class="text-lg xl:text-xl hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
-            >
-                Contacto
-            </p>
+            <a href="#">
+                <p
+                    class="text-lg xl:text-xl hover:cursor-pointer hover:text-[--secundario] hover:scale-110 transition-transform"
+                >
+                    Inicio
+                </p>
+            </a>
+            <a href="#acerca">
+                <p
+                    class="text-lg xl:text-xl hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
+                >
+                    Acerca
+                </p>
+            </a>
+            <a href="#quien-soy?">
+                <p
+                    class="text-lg xl:text-xl hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
+                >
+                    Quien soy?
+                </p>
+            </a>
+            <a href="#contacto">
+                <p
+                    class="text-lg xl:text-xl hover:cursor-pointer hover:text-violet-700 hover:scale-110 transition-transform"
+                >
+                    Contacto
+                </p>
+            </a>
         </div>
         <div class="hidden w-64 flex-row hover:cursor-pointer lg:flex">
             <a href="iniciar" class="w-1/2">
