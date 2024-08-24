@@ -15,9 +15,11 @@ function Hamburguesa() {
         if (path == pathHamburguesa) {
             setPath(pathCerrar)
             setMenu(true)
+            document.body.style.overflowY = 'hidden';
         } else {
             setPath(pathHamburguesa)
             setMenu(false)
+            document.body.style.overflowY = 'auto';
         }
 
     }
