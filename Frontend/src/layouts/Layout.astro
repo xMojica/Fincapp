@@ -24,7 +24,7 @@ const { title } = Astro.props;
         --primario: #26272b;
         --secundario: #6366f1;
         --terciario: #ffffff;
-        --cuaternario: #e0dfdf;
+        --cuaternario: #ffffffca;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -37,6 +37,10 @@ const { title } = Astro.props;
         footer {
             background-color: var(--primario);
         }
+
+        svg {
+            fill: var(--terciario);
+        }
     }
 
     @media (prefers-color-scheme: light) {
@@ -48,6 +52,10 @@ const { title } = Astro.props;
         header,
         footer {
             background-color: var(--cuaternario);
+        }
+
+        svg {
+            fill: #26272b;
         }
     }
 
