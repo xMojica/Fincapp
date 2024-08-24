@@ -24,6 +24,7 @@ const { title } = Astro.props;
         --primario: #26272b;
         --secundario: #6366f1;
         --terciario: #ffffff;
+        --cuaternario: #e0dfdf;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -31,12 +32,22 @@ const { title } = Astro.props;
             background-color: var(--primario);
             color: var(--terciario);
         }
+
+        header,
+        footer {
+            background-color: var(--primario);
+        }
     }
 
     @media (prefers-color-scheme: light) {
         html {
-            background-color: var(--primario);
-            color: #e0dfdf;
+            background-color: var(--cuaternario);
+            color: var(--primario);
+        }
+
+        header,
+        footer {
+            background-color: var(--cuaternario);
         }
     }
 
