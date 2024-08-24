@@ -10,11 +10,11 @@ function Hamburguesa() {
         if (icono == "./menu.svg") {
             setIcono("./cerrar.svg")
             setMenu(true)
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflowY = 'hidden';
         } else {
             setIcono("./menu.svg")
             setMenu(false)
-            document.body.style.overflow = 'scroll';
+            document.body.style.overflowY = 'scroll';
         }
 
     }
