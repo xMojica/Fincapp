@@ -5,7 +5,7 @@ const pool = require("../db");
 // Obtener todos los animales
 router.get("/", async (req, res, next) => {
     try {
-        const result = await pool.query(`SELECT *FROM animal`);
+        const result = await pool.query(`SELECT * FROM animal`);
         res.status(200).json(result.rows);
     } catch (e) {
         res.status(400);
@@ -39,7 +39,7 @@ router.post("/", async (req, res, next) => {
         fecha_ingreso,
         fecha_salida,
         imagen,
-        corral_id,
+        corral_id
     } = req.body;
     try {
         const result = await pool.query(
@@ -57,7 +57,7 @@ router.post("/", async (req, res, next) => {
                 fecha_ingreso,
                 fecha_salida,
                 imagen,
-                corral_id,
+                corral_id
             ]
         );
         res.status(201).json(result.rows[0]);
@@ -79,7 +79,7 @@ router.put("/:id", async (req, res, next) => {
         fecha_ingreso,
         fecha_salida,
         imagen,
-        corral_id,
+        corral_id
     } = req.body;
 
     try {
@@ -124,7 +124,7 @@ router.put("/:id", async (req, res, next) => {
                     : nuevoAnimal.fecha_salida,
             imagen: imagen !== undefined ? imagen : nuevoAnimal.imagen,
             corral_id:
-                corral_id !== undefined ? corral_id : nuevoAnimal.corral_id,
+                corral_id !== undefined ? corral_id : nuevoAnimal.corral_id
         };
 
         const result = await pool.query(
@@ -144,7 +144,7 @@ router.put("/:id", async (req, res, next) => {
                 animalActualizado.fecha_salida,
                 animalActualizado.imagen,
                 animalActualizado.corral_id,
-                id,
+                id
             ]
         );
 

@@ -57,7 +57,7 @@ router.put("/:id", async (req, res, next) => {
     const { capacidad } = req.body;
     try {
         const corral = await pool.query("SELECT * FROM corral Where id = $1", [
-            id,
+            id
         ]);
 
         if (corral.rows.length === 0) {
